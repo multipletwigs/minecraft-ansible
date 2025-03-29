@@ -1,0 +1,22 @@
+version: "3.0"
+services:
+  wg-access-server:
+    image: "ghcr.io/freifunkmuc/wg-access-server:{{ wg_access_server_version }}"
+    container_name: wg-access-server
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - "/mnt/wireguard:/data"
+    environment:
+      - "WG_ADMIN_PASSWORD={{ secrets.wireguard.admin_password }}"
+      - "WG_WIREGUARD_PRIVATE_KEY={{ secrets.wireguard.private_key }}"
+      - "WG_VPN_ALLOWED_IPS={{ network.subnet.cidr }}"
+      - "WG_DNS_UPSTREAM={{ dns.servers[0] }}"
+      - "WG_EXTERNAL_HOST={{ ansible_host }}"
+      - "WG_VPN_CIDR={{ network.vpn.cidr }}"
+      - "WG_VPN_CIDRV6=0" # Disable IPv6
+    ports:
+      - "127.0.0.1:8000:8000/tcp"
+      - "51820:51820/udp"
+    devices:
+      - "/dev/net/tun:/dev/net/tun"

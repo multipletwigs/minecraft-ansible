@@ -1,0 +1,48 @@
+- name: Include secrets
+  community.sops.load_vars:
+    file: "../{{variable_files_path}}/modded-mc.secrets.enc.yaml"
+    name: secrets
+
+- name: Install system wide dependencies
+  ansible.builtin.apt:
+    pkg:
+      - gnupg
+      - lsb-release
+      - apt-transport-https
+      - software-properties-common
+      - curl
+      - wget
+      - ca-certificates
+      - acl
+      - cron
+      - python3
+      - python3-pip
+      - vim
+    update_cache: yes
+
+- name: "Install docker"
+  import_tasks: docker.yaml
+
+- name: Create Wireguard config directory
+  file:
+    path: /etc/wireguard
+    state: directory
+
+- name: Create Wireguard data directory
+  file:
+    path: /mnt/wireguard
+    state: directory
+
+- name: Create docker-compose file for Wireguard
+  ansible.builtin.template:
+    src: templates/docker-compose.yml.j2
+    dest: /etc/wireguard/docker-compose.yml
+  notify:
+    - Restart wireguard
+
+- name: Create systemd service for Wireguard
+  ansible.builtin.template:
+    src: templates/wireguard.service.j2
+    dest: /etc/systemd/system/wireguard.service
+  notify:
+    - Reload systemctl

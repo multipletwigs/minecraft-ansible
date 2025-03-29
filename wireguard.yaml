@@ -1,0 +1,7 @@
+---
+- hosts: modded_mc
+  become: yes
+  vars_files:
+    - "{{variable_files_path}}/modded-mc.yaml"
+  roles:
+    - wireguard

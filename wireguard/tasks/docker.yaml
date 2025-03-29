@@ -1,0 +1,20 @@
+- name: Add Docker GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.docker.com/linux/debian {{ debian_version_name }} stable"
+    state: present
+- name: Install Docker
+  ansible.builtin.apt:
+    name: "docker-ce={{ docker_version }}"
+    state: present
+    update_cache: true
+    force: yes
+- name: Install Docker compose
+  ansible.builtin.apt:
+    name: "docker-compose-plugin={{ docker_compose_version }}"
+    state: present
+    force: yes
+    update_cache: true

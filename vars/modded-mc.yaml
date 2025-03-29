@@ -1,0 +1,21 @@
+wg_access_server_version: v0.13.0
+
+debian_version_name: bookworm
+docker_version: "5:27.1.1-1~debian.12~bookworm"
+docker_compose_version: "2.29.1-1~debian.12~bookworm"
+
+project_name: floorgang-moddedmc
+dns:
+  servers:
+    - "1.1.1.1"
+    - "8.8.8.8"
+network:
+  subnet:
+    cidr: 10.0.0.0/16
+  vpn:
+    cidr: "172.0.0.0/16"
+  ip:
+    internal:
+      vm_instance: 10.0.0.51
+    external:
+      vm_instance: 217.142.185.95

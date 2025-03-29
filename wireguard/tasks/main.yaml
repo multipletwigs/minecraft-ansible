@@ -1,0 +1,2 @@
+- import_tasks: tasks/wireguard.yaml
+  tags: [wireguard]

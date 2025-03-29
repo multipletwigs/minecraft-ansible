@@ -1,0 +1,4 @@
+[modded_mc]
+217.142.185.95 ansible_user=ubuntu variable_files_path=../vars/
+
+
