@@ -1,0 +1,26 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install OpenJDK on Ubuntu
+  apt:
+    name: "openjdk-{{ java_version }}-jdk"
+    state: present
+
+- name: Verify Java installation
+  command: java -version
+  register: java_version_output
+  changed_when: false # This command doesn't change anything
+
+- name: Display Java version
+  debug:
+    var: java_version_output.stderr_lines # Java outputs version to stderr
+
+- name: Display Minecraft Java compatibility information
+  debug:
+    msg: >
+      Installed Java {{ java_version }} for Minecraft {{ minecraft_version }}.
+      Note: Java 17 is recommended for Minecraft 1.17-1.20.4.
+      Java 21 is recommended for Minecraft 1.20.5 and higher.

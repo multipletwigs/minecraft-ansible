@@ -1,0 +1,9 @@
+tunnel: {{ tunnel_id.stdout }}
+credentials-file: {{ cloudflared_config_dir }}/{{ tunnel_name }}.json
+
+ingress:
+{% for service in cloudflared_services %}
+  - hostname: {{ service.hostname }}
+    service: {{ service.protocol }}://localhost:{{ service.port }}
+{% endfor %}
+  - service: http_status:404

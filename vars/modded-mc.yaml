@@ -4,6 +4,21 @@ debian_version_name: bookworm
 docker_version: "5:27.1.1-1~debian.12~bookworm"
 docker_compose_version: "2.29.1-1~debian.12~bookworm"
 
+java_version: 21
+java_implementation: openjdk
+minecraft_version: 1.20.1
+
+tunnel_name: "minecraft-tunnel"
+tunnel_domain: "mc.nightly.ink"
+minecraft_port: 25565
+
+cert_local_path: "~/.cloudflared/cert.pem"
+cloudflared_config_dir: "~/.cloudflared"
+cloudflared_services:
+  - hostname: mc.nightly.ink
+    protocol: tcp
+    port: 25565
+
 project_name: floorgang-moddedmc
 dns:
   servers:
