@@ -1,0 +1,15 @@
+[Unit]
+Description=Fabric Minecraft Server
+After=network.target
+
+[Service]
+WorkingDirectory={{ server_dir }}
+ExecStart={{ server_dir }}/start-server.sh
+ExecStop=/bin/kill -SIGTERM $MAINPID
+Restart=on-failure
+RestartSec=60s
+TimeoutStartSec=120
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target

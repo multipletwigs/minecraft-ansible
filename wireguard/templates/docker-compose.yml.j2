@@ -10,7 +10,7 @@ services:
     environment:
       - "WG_ADMIN_PASSWORD={{ secrets.wireguard.admin_password }}"
       - "WG_WIREGUARD_PRIVATE_KEY={{ secrets.wireguard.private_key }}"
-      - "WG_VPN_ALLOWED_IPS={{ network.subnet.cidr }}"
+      - "WG_VPN_ALLOWED_IPS=0.0.0.0/0"
       - "WG_DNS_UPSTREAM={{ dns.servers[0] }}"
       - "WG_EXTERNAL_HOST={{ ansible_host }}"
       - "WG_VPN_CIDR={{ network.vpn.cidr }}"

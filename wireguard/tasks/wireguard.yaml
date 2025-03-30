@@ -46,3 +46,17 @@
     dest: /etc/systemd/system/wireguard.service
   notify:
     - Reload systemctl
+
+- name: Reload systemctl
+  ansible.builtin.systemd:
+    name: wireguard.service
+    enabled: true
+    daemon_reload: true
+    state: restarted
+
+- name: Restart wireguard
+  ansible.builtin.systemd:
+    name: wireguard
+    state: restarted
+    daemon_reload: true
+    enabled: true

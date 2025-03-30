@@ -1,2 +1,0 @@
-- import_tasks: tasks/cloudflared.yaml
-  tags: [cloudflared]

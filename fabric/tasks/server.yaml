@@ -1,0 +1,64 @@
+---
+- name: Create Minecraft directory structure
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  with_items:
+    - "{{ server_dir }}"
+    - "{{ server_dir }}/mods"
+    - "{{ server_dir }}/config"
+    - "{{ server_dir }}/world"
+    - "{{ server_dir }}/backups"
+
+- name: Download Fabric server launcher
+  get_url:
+    url: "https://meta.fabricmc.net/v2/versions/loader/{{ minecraft_version }}/{{ fabric_loader }}/{{ fabric_launcher }}/server/jar"
+    dest: "{{ server_dir }}/fabric-server-mc.{{ minecraft_version }}-loader.{{ fabric_loader }}-launcher.{{ fabric_launcher }}.jar"
+    mode: "0755"
+
+- name: Download Fabric API (if enabled)
+  get_url:
+    url: "{{ fabric_api_url }}"
+    dest: "{{ server_dir }}/mods/fabric-api.jar"
+    mode: "0644"
+  when: install_fabric_api and fabric_api_url is defined
+
+- name: Create server.properties from template
+  template:
+    src: ../templates/server.properties.j2
+    dest: "{{ server_dir }}/server.properties"
+    mode: "0644"
+
+- name: Create eula.txt (accepting EULA)
+  copy:
+    content: "eula=true"
+    dest: "{{ server_dir }}/eula.txt"
+    mode: "0644"
+
+- name: Create start script
+  template:
+    src: ../templates/start-server.sh.j2
+    dest: "{{ server_dir }}/start-server.sh"
+    mode: "0755"
+
+- name: Set up systemd service
+  template:
+    src: ../templates/minecraft.service.j2
+    dest: /etc/systemd/system/minecraft.service
+    mode: "0644"
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start Minecraft service
+  systemd:
+    name: minecraft
+    enabled: yes
+    state: started
+
+- name: Restart Minecraft service
+  systemd:
+    name: minecraft
+    state: restarted

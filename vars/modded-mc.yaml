@@ -13,7 +13,7 @@ tunnel_domain: "mc.nightly.ink"
 minecraft_port: 25565
 
 cert_local_path: "~/.cloudflared/cert.pem"
-cloudflared_config_dir: "~/.cloudflared"
+cloudflared_config_dir: "/root/.cloudflared"
 cloudflared_services:
   - hostname: mc.nightly.ink
     protocol: tcp
