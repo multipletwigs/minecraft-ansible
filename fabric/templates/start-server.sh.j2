@@ -12,7 +12,7 @@ echo "Server directory: {{ server_dir }}"
 echo "Memory allocation: {{ java_xms }} (min) to {{ java_xmx }} (max)"
 
 # Log the startup
-echo "Server started at $(date)" >> server_starts.log
+echo "Server started at $(date)" >>server_starts.log
 
 # Execute the Java command
-exec ${JAVA_CMD}
+exec screen -DmS minecraft ${JAVA_CMD}

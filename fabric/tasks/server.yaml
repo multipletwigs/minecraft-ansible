@@ -1,4 +1,10 @@
 ---
+- name: Install unzip package
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+    update_cache: yes
+
 - name: Create Minecraft directory structure
   file:
     path: "{{ item }}"
@@ -10,6 +16,29 @@
     - "{{ server_dir }}/config"
     - "{{ server_dir }}/world"
     - "{{ server_dir }}/backups"
+    - "{{ server_dir }}/resourcepacks"
+
+- name: Check if fantasy modpack zip already exists
+  ansible.builtin.stat:
+    path: "{{ server_dir }}/fantasy-mc.zip"
+  register: zip_stat
+
+- name: Sync fantasy modpack zip file
+  ansible.posix.synchronize:
+    src: ../fantasy-mc.zip
+    dest: "{{ server_dir }}/fantasy-mc.zip"
+    mode: push
+    rsync_opts:
+      - "--progress"
+  when: not zip_stat.stat.exists
+
+- name: Unzip fantasy modpack
+  ansible.builtin.unarchive:
+    src: "{{ server_dir }}/fantasy-mc.zip"
+    dest: "{{ server_dir }}"
+    remote_src: yes
+    extra_opts:
+      - -o
 
 - name: Download Fabric server launcher
   get_url:
