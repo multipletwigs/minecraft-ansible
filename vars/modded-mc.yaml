@@ -6,18 +6,11 @@ docker_compose_version: "2.29.1-1~debian.12~bookworm"
 
 java_version: 21
 java_implementation: openjdk
-minecraft_version: 1.20.1
+minecraft_version: 1.21.1
 
 tunnel_name: "minecraft-tunnel"
 tunnel_domain: "mc.nightly.ink"
 minecraft_port: 25565
-
-cert_local_path: "~/.cloudflared/cert.pem"
-cloudflared_config_dir: "/root/.cloudflared"
-cloudflared_services:
-  - hostname: mc.nightly.ink
-    protocol: tcp
-    port: 25565
 
 project_name: floorgang-moddedmc
 dns:
@@ -31,6 +24,6 @@ network:
     cidr: "172.0.0.0/16"
   ip:
     internal:
-      vm_instance: 10.0.0.51
+      vm_instance: 10.0.0.108
     external:
-      vm_instance: 217.142.185.95
+      vm_instance: 140.245.61.239

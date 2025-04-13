@@ -12,29 +12,24 @@
     mode: "0755"
   with_items:
     - "{{ server_dir }}"
-    - "{{ server_dir }}/mods"
-    - "{{ server_dir }}/config"
-    - "{{ server_dir }}/world"
-    - "{{ server_dir }}/backups"
-    - "{{ server_dir }}/resourcepacks"
 
-- name: Check if fantasy modpack zip already exists
+- name: Check if medieval modpack zip already exists
   ansible.builtin.stat:
-    path: "{{ server_dir }}/fantasy-mc.zip"
+    path: "{{ server_dir }}/medieval-mc.zip"
   register: zip_stat
 
-- name: Sync fantasy modpack zip file
+- name: Sync medieval modpack zip file
   ansible.posix.synchronize:
-    src: ../fantasy-mc.zip
-    dest: "{{ server_dir }}/fantasy-mc.zip"
+    src: ../medieval-mc.zip
+    dest: "{{ server_dir }}/medieval-mc.zip"
     mode: push
     rsync_opts:
       - "--progress"
   when: not zip_stat.stat.exists
 
-- name: Unzip fantasy modpack
+- name: Unzip medieval modpack
   ansible.builtin.unarchive:
-    src: "{{ server_dir }}/fantasy-mc.zip"
+    src: "{{ server_dir }}/medieval-mc.zip"
     dest: "{{ server_dir }}"
     remote_src: yes
     extra_opts:
